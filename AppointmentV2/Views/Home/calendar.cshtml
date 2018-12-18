@@ -90,10 +90,12 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.css" rel="stylesheet" />
 <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.print.css" rel="stylesheet" media="print" />
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+<link href='https://use.fontawesome.com/releases/v5.0.6/css/all.css' rel='stylesheet'>
 @section Scripts{
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/locale/th.js"></script>
 
     <script>
         $(document).ready(function () {
@@ -132,13 +134,16 @@
                 $('#calendar').fullCalendar('destroy');
                 $('#calendar').fullCalendar({
                     contentHeight: 400,
+                    themeSystem: 'bootstrap4',
                     defaultDate: new Date(),
-                    timeFormat: 'h(:mm)a',
+                    timeFormat: 'h(:mm)',
                     header: {
                         left: 'prev,next today',
                         center: 'title',
                         right: 'month,basicWeek,basicDay,agenda'
                     },
+                    locale: 'th',
+                    navLinks: false,
                     eventLimit: true,
                     eventColor: '#378006',
                     events: events,
@@ -147,9 +152,9 @@
                         selectedEvent = calEvent;
                         $('#myModal #eventTitle').text(calEvent.title);
                         var $description = $('<div/>');
-                        $description.append($('<p/>').html('<b>Start:</b>' + calEvent.start.format("DD-MMM-YYYY HH:mm a")));
+                        $description.append($('<p/>').html('<b>Start:</b>' + calEvent.start.format("DD-MMM-YYYY HH:mm")));
                         if (calEvent.end != null) {
-                            $description.append($('<p/>').html('<b>End:</b>' + calEvent.end.format("DD-MMM-YYYY HH:mm a")));
+                            $description.append($('<p/>').html('<b>End:</b>' + calEvent.end.format("DD-MMM-YYYY HH:mm")));
                         }
                         $description.append($('<p/>').html('<b>Description:</b>' + calEvent.description));
                         $('#myModal #pDetails').empty().html($description);
@@ -175,8 +180,8 @@
                         var data = {
                             EventID: event.eventID,
                             Subject: event.title,
-                            Start: event.start.format('DD/MM/YYYY HH:mm A'),
-                            End: event.end != null ? event.end.format('DD/MM/YYYY HH:mm A') : null,
+                            Start: event.start.format('DD/MM/YYYY HH:mm'),
+                            End: event.end != null ? event.end.format('DD/MM/YYYY HH:mm') : null,
                             Description: event.description,
                             ThemeColor: event.color,
                             IsFullDay: event.allDay
@@ -213,7 +218,7 @@
             })
             $('#dtp1,#dtp2').datetimepicker({
                 
-                format: 'DD/MM/YYYY HH:mm A'
+                format: 'DD/MM/YYYY HH:mm'
             });
             $('#chkIsFullDay').change(function () {
                 if ($(this).is(':checked')) {
@@ -227,10 +232,10 @@
                 if (selectedEvent != null) {
                     $('#hdEventID').val(selectedEvent.eventID);
                     $('#txtSubject').val(selectedEvent.title);
-                    $('#txtStart').val(selectedEvent.start.format('DD/MM/YYYY HH:mm A'));
+                    $('#txtStart').val(selectedEvent.start.format('DD/MM/YYYY HH:mm'));
                     $('#chkIsFullDay').prop("checked", selectedEvent.allDay || false);
                     $('#chkIsFullDay').change();
-                    $('#txtEnd').val(selectedEvent.end != null ? selectedEvent.end.format('DD/MM/YYYY HH:mm A') : '');
+                    $('#txtEnd').val(selectedEvent.end != null ? selectedEvent.end.format('DD/MM/YYYY HH:mm') : '');
                     $('#txtDescription').val(selectedEvent.description);
                     $('#ddThemeColor').val(selectedEvent.color);
                 }
@@ -252,8 +257,8 @@
                     return;
                 }
                 else {
-                    var startDate = moment($('#txtStart').val(), "DD/MM/YYYY HH:mm A").toDate();
-                    var endDate = moment($('#txtEnd').val(), "DD/MM/YYYY HH:mm A").toDate();
+                    var startDate = moment($('#txtStart').val(), "DD/MM/YYYY HH:mm").toDate();
+                    var endDate = moment($('#txtEnd').val(), "DD/MM/YYYY HH:mm").toDate();
                     if (startDate > endDate) {
                         alert('Invalid end date');
                         return;
